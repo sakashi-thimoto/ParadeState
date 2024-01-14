@@ -65,7 +65,6 @@ function parade_state_script(copypaste){
         }
         if (!first_parade) {
             let stayout_array = Department.slice(stayout_index,stayin_index);
-            console.log(stayout_array);
             for (let index = 0; index < stayout_array.length; index++) {
                 const element = stayout_array[index];
                 ranks.forEach(rank => {
