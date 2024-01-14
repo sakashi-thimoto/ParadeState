@@ -1,5 +1,4 @@
 function parade_state_script(copypaste){
-    console.log(copypaste);
     var parade_state = copypaste
     var array = parade_state.split("Department")
     array.pop()
@@ -36,10 +35,10 @@ function parade_state_script(copypaste){
             if (word.toUpperCase().includes("LAST PARADE")) {
                 first_parade = false
             }
-            if (word.toUpperCase().includes("OUT")) {
+            if (word.toUpperCase().includes("STAY OUT")) {
                 stayout_index = index;
             }
-            if (word.toUpperCase().includes("IN")) {
+            if (word.toUpperCase().includes("STAY IN")) {
                 stayin_index = index;
             }
             if (word.toUpperCase().includes("MEDICAL APPOINTMENT")) {
@@ -66,6 +65,7 @@ function parade_state_script(copypaste){
         }
         if (!first_parade) {
             let stayout_array = Department.slice(stayout_index,stayin_index);
+            console.log(stayout_array);
             for (let index = 0; index < stayout_array.length; index++) {
                 const element = stayout_array[index];
                 ranks.forEach(rank => {
