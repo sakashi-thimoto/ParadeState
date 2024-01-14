@@ -1,312 +1,188 @@
-const parade_state = `S1 Department
-
-Total Strength: 15
-Present Strength: 14
-
-First Parade
-15/01/24
-
-Report Sick
-Nil
-
-Status
-
-PTE BARATHAN 
-PERM EX (UPPER LIMB)
-EX PUSH UPS (RENEWING)
-EX RMJ (RENEWING)
-
-PTE CHIN HAO
-EX HEAVY LOAD, RANGE, RMJ (271123 - 140223)
-
-PTE DARIUS SOH WEIEN
-EX VOC (191223-070324)
-
-PTE YAP JIAN WEN JAREN
-PERM EX (FLEGS)
-PERM EX (STAY IN)
-
-PTE JOSHUA WONG SHOU HUI 
-PERM EX FLEGS
-PERM EX SHARPS
-EX STAY IN (281123-150224)
-
-Medical Appointment
-Nil
-
-Medical Leaves
-Nil
-
-Leaves
-Nil
-
-Overseas Leave
-Nil
-
-Weekend/Off
-Nil
-
-Course
-CPT WESLEY
-
-Others
-NIL
-
-————
-
-S2 Department
-
-Total Strength: 07
-Present Strength: 07
-
-First Parade
-15/01/24
-
-Report Sick
-Nil
-
-Status
-PTE DYLAN LD (050124-180224)
-
-Medical Appointment
-Nil
-
-Medical Leaves
-Nil
-
-Leaves
-Nil
-
-Overseas Leave
-Nil
-
-Off
-Nil
-
-Course
-Nil
-
-Others
-Nil
-____________
-
-Sigmed Department
-
-First Parade
-14/01/24
-
-Total Strength: 13
-Present Strength: 10
-
-Report Sick
-NIL
-
-Status
-LCP VANIEL
-EX STAY IN 
-
-LCP ERIC TOH ZHI YING
-EX RMJ AND BOOTS (141223 - 110224)
-
-CPL AVIER TAN KAI WEN
-EX STAY IN (281123 - 150224)
-
-Medical Appointment
-NIL
-
-Medical Leaves
-LCP ERIC (080124 - 070324)
-
-Leaves
-CPL AVIER
-
-Overseas Leave
-NIL
-
-Weekend/Off
-2SG CHONG JUN (AM)
-
-Course
-NIL
-
-Others
-NIL
-———————
-
-S3 Department
-
-Total Strength: 8
-Present Strength: 7
-
-First Parade
-15/01/24
-
-Report sick
-NIL
-
-Status
-LCP CHRISTIAN 
-PERM EX STAY IN, EX RMJ, HEAVY LOADS
-
-PTE KIM KEAT
-PERM EX FLEGS 
-
-PTE IAN 
-EX STAY IN, FLEGS (041223-210424)
-
-Medical Appointment
-NIL
-
-Medical Leaves
-NIL
-
-Leaves
-NIL
-
-Overseas Leave
-NIL
-
-Weekend/Off
-3SG MATT (AM OFF)
-
-Course
-NIL
-
-Others
-NIL
-___________
-
-S4 Department
-
-First Parade
-15/01/24
-
-Total Strength: 13
-Present Strength: 11
-
-Report Sick
-Nil
-
-Status
-PTE YANNIAN TAN
-EX(PROLONGED STANDING, RMJ, HEAVY LOAD, STAY IN, FIREARMS, LIVE FIRING, EXPLOSIVES, GRENADES, SHARPS, IPPT, HL, LIGHT DUTY) - in the procrss of renewing 
-
-PTE DERRICK LAU
-PERM EX(STAY IN, FIREAMS, LIVE FIRING, EXPLOSIVES, GRENADES, SHARPS, RMJ, PHYSICAL ACTIVITIES)
-
-PTE DING HENG
-PERM EX FLEGS 
-PERM EX STAY IN
-
-PTE RALPH
-Perm EX FLEGS (until 260125)
-EX STAY IN (181223 - 100324)
-EX DUTY (020124-080324)
-
-PTE CHENG XIAO
-PERM EX FLEGS (until 010225)
-PERM EX STAY IN (until 010224)
-
-PTE NIXON
-PERM EX FLEGS
-PERM EX STAY IN
-EX DUTY (until 030124)
-
-Medical Appointment
-PTE RALPH (AM)
-
-Medical Leave
-Nil
-
-Leaves
-LCP YANNIAN
-
-Overseas Leave
-Nil
-
-Off
-Nil
-
-Course
-CPT
-
-Others
-Nil
-____________
-
-QM Department
-
-Total Strength: 18
-Present Strength: 16
-
-First Parade
-15/01/2024
-
-Report Sick
-NIL
-
-Status
-CPL IZZAT 
-PERM EX RMJ
-
-LCP JERIEL
-EX STAY IN (EXP 010124), EX FLEGS
-
-REC CEDRIC 
-LD (EXP 260224), EX FIREARMS, EX UPPER LIMB (PROCESS OF RENEWING)
-
-REC SAIFUL
-EX Stay In (Perm), EX No.4 Uniform (Perm), EX Prolonged Heat/Sweat/Dust Exposure (Perm)
-
-PTE SIBI 
-EX STAYIN (PERM)
-EX FLEG (PERM)
-
-Medical Appointment
-NIL
-
-Medical Leaves
-NIL
-
-Leaves
-NIL
-
-Overseas Leave
-NIL
-
-Weekend/Off
-CPL ILHAM
-CPL RAZI
-
-Course
-CPT
-
-Other
-NIL
-`
-var array = parade_state.split("Department")
-array.pop()
-var Course = 0
-for (let index = 0; index < array.length; index++) {
-    var Department = array[index];
-    let course_index = 0;
-    let others_index = 0;
-    Department = Department.split("\n")
-    for (let index = 0; index < Department.length; index++) {
-        const word = Department[index];
-        if (word.toUpperCase() == "COURSE") {
-            course_index = index
+function parade_state_script(copypaste){
+    console.log(copypaste);
+    var parade_state = copypaste
+    var array = parade_state.split("Department")
+    array.pop()
+    var first_parade = true
+    var Total_Strength = 0
+    var Stay_out = 0
+    var MA = 0
+    var MC = 0
+    var Leaves = 0
+    var OVL = 0
+    var Off = 0
+    var Course = 0
+    var Others = 0
+    let ranks = ["REC","PTE","SCT","LCP", "CPL", "CFC", "3SG", "2SG", "1SG", "SSG", "MSG", "3WO", "2WO", "1WO", "MWO", "SWO", "CWO", "2LT", "OCT", "LTA", "CPT","MAJ","LTC","SLTC","COL","BG"]
+    for (let index = 0; index < array.length; index++) {
+        var Department = array[index];
+        let MA_index = 0;
+        let MC_index = 0;
+        let Leave_index = 0;
+        let OVL_index = 0;
+        let Off_index = 0;
+        let course_index = 0;
+        let others_index = 0;
+        let stayout_index = 0;
+        let stayin_index = 0
+        Department = Department.split("\n")
+        for (let index = 0; index < Department.length; index++) {
+            var word = Department[index];
+            word = word.trim()
+            if (word.toUpperCase().includes("TOTAL STRENGTH")) {
+                let number = word.split(" ")
+                Total_Strength += parseInt(number[number.length-1]);
+            }
+            if (word.toUpperCase().includes("LAST PARADE")) {
+                first_parade = false
+            }
+            if (word.toUpperCase().includes("OUT")) {
+                stayout_index = index;
+            }
+            if (word.toUpperCase().includes("IN")) {
+                stayin_index = index;
+            }
+            if (word.toUpperCase().includes("MEDICAL APPOINTMENT")) {
+                MA_index = index;
+            }
+            if (word.toUpperCase().includes("MEDICAL LEAVE")) {
+                MC_index = index;
+            }
+            if (word.toUpperCase().includes("LEAVES")) {
+                Leave_index = index;
+            }
+            if (word.toUpperCase().includes("OVERSEAS LEAVE")) {
+                OVL_index = index;
+            }
+            if (word.toUpperCase().includes("OFF")) {
+                Off_index = index;
+            }
+            if (word.toUpperCase().includes("OTHER")) {
+                others_index = index;
+            }
+            if (word.toUpperCase().includes("COURSE")) {
+                course_index = index;
+            }
         }
-        if (word.toUpperCase() == "OTHERS") {
-            others_index = index
+        if (!first_parade) {
+            let stayout_array = Department.slice(stayout_index,stayin_index);
+            for (let index = 0; index < stayout_array.length; index++) {
+                const element = stayout_array[index];
+                ranks.forEach(rank => {
+                    if (element.includes(rank)) {
+                        Stay_out += 1;
+                    }
+                });
+            }
+        }
+        let MA_array = Department.slice(MA_index,MC_index);
+        for (let index = 0; index < MA_array.length; index++) {
+            const element = MA_array[index];
+            ranks.forEach(rank => {
+                if (element.includes(rank)) {
+                    MA += 1;
+                }
+            });
+        }
+        let MC_array = Department.slice(MC_index,Leave_index);
+        for (let index = 0; index < MC_array.length; index++) {
+            const element = MC_array[index];
+            ranks.forEach(rank => {
+                if (element.includes(rank)) {
+                    MC += 1;
+                }
+            });
+        }
+        let leave_array = Department.slice(Leave_index,OVL_index);
+        for (let index = 0; index < leave_array.length; index++) {
+            const element = leave_array[index];
+            ranks.forEach(rank => {
+                if (element.includes(rank)) {
+                    Leaves += 1;
+                }
+            });
+        }
+        let ovl_array = Department.slice(OVL_index,Off_index);
+        for (let index = 0; index < ovl_array.length; index++) {
+            const element = ovl_array[index];
+            ranks.forEach(rank => {
+                if (element.includes(rank)) {
+                    OVL += 1;
+                }
+            });
+        }
+        let off_array = Department.slice(Off_index,course_index);
+        for (let index = 0; index < off_array.length; index++) {
+            const element = off_array[index];
+            ranks.forEach(rank => {
+                if (element.includes(rank)) {
+                    Off += 1;
+                }
+            });
+        }
+        let course_array = Department.slice(course_index,others_index);
+        for (let index = 0; index < course_array.length; index++) {
+            const element = course_array[index];
+            ranks.forEach(rank => {
+                if (element.includes(rank)) {
+                    Course += 1;
+                }
+            });
+        }
+        let other_array = Department.slice(others_index, Department.length);
+        for (let index = 0; index < other_array.length; index++) {
+            const element = other_array[index];
+            ranks.forEach(rank => {
+                if (element.includes(rank)) {
+                    Others += 1;
+                }
+            });
         }
     }
-    let course_array = Department.slice(course_index,others_index);
-    for (let index = 0; index < course_array.length; index++) {
-        const element = course_array[index];
-        if (element.includes("CPT")) {
-            Course += 1;
-        }
+    let Out_Camp = Course + Off + Leaves + OVL + MC + MA + Others 
+    let Current_Strength = Total_Strength - Out_Camp
+    let time = "0800"
+    const date = new Date();
+    let day = date.getDate()
+    let month = date.getMonth() + 1
+    let year = date.getFullYear()
+    let sun = "Morning"
+    year = year.toString().slice(2,4)
+    if (!first_parade) {
+        time = "2100"
+        sun = "Evening"
     }
+    else {
+        day += 1;
+    }
+    document.getElementById("pState").value = `
+    HQ COY ${day}/${month}/${year} ${time} HRS
+    ${sun} Strength: ${Current_Strength} / ${Total_Strength}
+    Course: ${Course}
+    Off/Wkend: ${Off}
+    Detention: ${0}
+    Hospitalisation: ${0} 
+    Local Leave: ${Leaves}
+     Overseas Leave: ${OVL}
+    MC: ${MC}
+    Others: ${Others}
+    MA/Dental: ${MA}
+    Stay-Out: ${Stay_out}
+    (Subtotal) Out camp: ${Out_Camp} 
+    `
+    document.getElementById("submitButton").remove()
 }
-console.log(Course);
+function copyText() {
+  // Get the text field
+  var copyText = document.getElementById("pState");
+
+  // Select the text field
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+
+   // Copy the text inside the text field
+  navigator.clipboard.writeText(copyText.value);
+
+  // Alert the copied text
+  alert("Copied the text: " + copyText.value);
+}
