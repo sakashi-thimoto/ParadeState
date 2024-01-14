@@ -57,7 +57,7 @@ function parade_state_script(copypaste){
             if (word.toUpperCase().includes("OFF")) {
                 Off_index = index;
             }
-            if (word.toUpperCase().includes("OTHER")) {
+            if (word.toUpperCase().includes("OTHERS")) {
                 others_index = index;
             }
             if (word.toUpperCase().includes("COURSE")) {
