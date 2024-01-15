@@ -138,7 +138,7 @@ function parade_state_script(copypaste){
             });
         }
     }
-    let Out_Camp = Course + Off + Leaves + OVL + MC + MA + Others 
+    let Out_Camp = Course + Off + Leaves + OVL + MC + MA + Others + Stay_out
     let Current_Strength = Total_Strength - Out_Camp
     let time = "0800"
     const date = new Date();
