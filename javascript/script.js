@@ -155,20 +155,19 @@ function parade_state_script(copypaste){
         day += 1;
     }
     document.getElementById("pState").value = `
-    HQ COY ${day}/${month}/${year} ${time} HRS
-    ${sun} Strength: ${Current_Strength} / ${Total_Strength}
-    Course: ${Course}
-    Off/Wkend: ${Off}
-    Detention: ${0}
-    Hospitalisation: ${0} 
-    Local Leave: ${Leaves}
-     Overseas Leave: ${OVL}
-    MC: ${MC}
-    Others: ${Others}
-    MA/Dental: ${MA}
-    Stay-Out: ${Stay_out}
-    (Subtotal) Out camp: ${Out_Camp} 
-    `
+HQ COY ${day}/${month}/${year} ${time} HRS
+${sun} Strength: ${Current_Strength} / ${Total_Strength}
+Course: ${Course}
+Off/Wkend: ${Off}
+Detention: ${0}
+Hospitalisation: ${0} 
+Local Leave: ${Leaves}
+ Overseas Leave: ${OVL}
+MC: ${MC}
+Others: ${Others}
+MA/Dental: ${MA}
+Stay-Out: ${Stay_out}
+(Subtotal) Out camp: ${Out_Camp}`
     document.getElementById("submitButton").remove()
 }
 function copyText() {
