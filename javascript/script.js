@@ -129,6 +129,7 @@ function parade_state_script(copypaste){
             });
         }
         let other_array = Department.slice(others_index, Department.length);
+        alert(other_array)
         for (let index = 0; index < other_array.length; index++) {
             const element = other_array[index];
             ranks.forEach(rank => {
