@@ -12,7 +12,7 @@ function parade_state_script(copypaste){
     var Off = 0
     var Course = 0
     var Others = 0
-    let ranks = ["REC","PTE","SCT","LCP", "CPL", "CFC", "3SG", "2SG", "1SG", "SSG", "MSG", "3WO", "2WO", "1WO", "MWO", "SWO", "CWO", "2LT", "OCT", "LTA", "CPT","MAJ","LTC","SLTC","COL","BG","CO","B2","RSM","USO","S1", "S2","S3","S4"]
+    let ranks = ["REC","PTE","SCT","LCP", "CPL", "CFC", "3SG", "2SG", "1SG", "SSG", "MSG", "3WO", "2WO", "1WO", "MWO", "SWO", "CWO", "2LT", "OCT", "LTA", "CPT","MAJ","LTC","SLTC","COL","BG","CO","B2","RSM","USO"]
     for (let index = 0; index < array.length; index++) {
         var Department = array[index];
         let MA_index = 0;
