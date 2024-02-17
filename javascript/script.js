@@ -56,7 +56,7 @@ function parade_state_script(copypaste){
             if (word.toUpperCase().includes("OFF")) {
                 Off_index = index;
             }
-            if (word.toUpperCase().includes("OTHERS")) {
+            if (word.toUpperCase().includes("OTHER")) {
                 others_index = index;
             }
             if (word.toUpperCase().includes("COURSE")) {
@@ -168,7 +168,6 @@ Others: ${Others}
 MA/Dental: ${MA}
 Stay-Out: ${Stay_out}
 (Subtotal) Out camp: ${Out_Camp}`
-    document.getElementById("submitButton").remove()
 }
 function copyText() {
   // Get the text field
