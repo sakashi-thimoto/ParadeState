@@ -12,6 +12,7 @@ function parade_state_script(copypaste){
     var Off = 0
     var Course = 0
     var Others = 0
+    var HL = 0
     let ranks = ["REC","PTE","SCT","LCP", "CPL", "CFC", "3SG", "2SG", "1SG", "SSG", "MSG", "3WO", "2WO", "1WO", "MWO", "SWO", "CWO", "2LT", "OCT", "LTA", "CPT","MAJ","LTC","SLTC","COL","BG","CO","B2","RSM","USO"]
     for (let index = 0; index < array.length; index++) {
         var Department = array[index];
@@ -24,6 +25,7 @@ function parade_state_script(copypaste){
         let others_index = 0;
         let stayout_index = 0;
         let stayin_index = 0
+        let HL_index = 0;
         Department = Department.split("\n")
         for (let index = 0; index < Department.length; index++) {
             var word = Department[index];
@@ -46,6 +48,9 @@ function parade_state_script(copypaste){
             }
             if (word.toUpperCase().includes("MEDICAL LEAVE")) {
                 MC_index = index;
+            }
+            if (word.toUpperCase().includes("HOSPITALISATION LEAVE")) {
+                HL_index = index;
             }
             if (word.toUpperCase().includes("LEAVES")) {
                 Leave_index = index;
@@ -83,12 +88,21 @@ function parade_state_script(copypaste){
                 }
             });
         }
-        let MC_array = Department.slice(MC_index,Leave_index);
+        let MC_array = Department.slice(MC_index,HL_index);
         for (let index = 0; index < MC_array.length; index++) {
             const element = MC_array[index];
             ranks.forEach(rank => {
                 if (element.includes(rank)) {
                     MC += 1;
+                }
+            });
+        }
+        let HL_array = Department.slice(HL_index,Leave_index);
+        for (let index = 0; index < HL_array.length; index++) {
+            const element = HL_array[index];
+            ranks.forEach(rank => {
+                if (element.includes(rank)) {
+                    HL += 1;
                 }
             });
         }
@@ -138,7 +152,7 @@ function parade_state_script(copypaste){
             });
         }
     }
-    let Out_Camp = Course + Off + Leaves + OVL + MC + MA + Others + Stay_out;
+    let Out_Camp = Course + Off + Leaves + OVL + MC + MA + Others + Stay_out + HL;
     let Current_Strength = Total_Strength - Out_Camp
     let time = "0800"
     const date = new Date();
@@ -160,7 +174,7 @@ ${sun} Strength: ${Current_Strength} / ${Total_Strength}
 Course: ${Course}
 Off/Wkend: ${Off}
 Detention: ${0}
-Hospitalisation: ${0} 
+Hospitalisation: ${HL} 
 Local Leave: ${Leaves}
  Overseas Leave: ${OVL}
 MC: ${MC}
