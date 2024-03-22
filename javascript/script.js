@@ -37,10 +37,10 @@ function parade_state_script(copypaste){
             if (word.toUpperCase().includes("LAST PARADE")) {
                 first_parade = false
             }
-            if (word.toUpperCase().includes("STAY OUT")) {
+            if (word.toUpperCase().includes("STAY OUT PERSONNEL")) {
                 stayout_index = index;
             }
-            if (word.toUpperCase().includes("STAY IN")) {
+            if (word.toUpperCase().includes("STAY IN PERSONNEL")) {
                 stayin_index = index;
             }
             if (word.toUpperCase().includes("MEDICAL APPOINTMENT")) {
