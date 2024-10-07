@@ -1,173 +1,119 @@
-function parade_state_script(copypaste){
-    var parade_state = copypaste
-    var array = parade_state.split("Department")
-    array.pop()
-    var first_parade = true
-    var Total_Strength = 0
-    var Stay_out = 0
-    var MA = 0
-    var MC = 0
-    var Leaves = 0
-    var OVL = 0
-    var Off = 0
-    var Course = 0
-    var Others = 0
-    var HL = 0
-    let ranks = ["REC","PTE","SCT","LCP", "CPL", "CFC", "3SG", "2SG", "1SG", "SSG", "MSG", "3WO", "2WO", "1WO", "MWO", "SWO", "CWO", "2LT", "OCT", "LTA", "CPT","MAJ","LTC","SLTC","COL","BG","CO","B2","RSM","USO"]
-    for (let index = 0; index < array.length; index++) {
-        var Department = array[index];
-        let MA_index = 0;
-        let MC_index = 0;
-        let Leave_index = 0;
-        let OVL_index = 0;
-        let Off_index = 0;
-        let course_index = 0;
-        let others_index = 0;
-        let stayout_index = 0;
-        let stayin_index = 0
-        let HL_index = 0;
-        Department = Department.split("\n")
-        for (let index = 0; index < Department.length; index++) {
-            var word = Department[index];
-            word = word.trim()
-            if (word.toUpperCase().includes("TOTAL STRENGTH")) {
-                let number = word.split(" ")
-                Total_Strength += parseInt(number[number.length-1]);
+function parade_state_script(copypaste) {
+    var parade_state = copypaste.trim();
+
+    // Extracting overall information (Total Strength, In Camp, Out Camp, etc.)
+    const summaryPattern = /\*Total Strength\*:\s*(\d+).*?\*In Camp:\*\s*(\d+).*?\*Out Camp:\*\s*(\d+)/s;
+    const summaryMatch = parade_state.match(summaryPattern);
+    if (!summaryMatch) {
+        alert("Summary information could not be found. Please check the input format.");
+        return;
+    }
+    let Total_Strength = parseInt(summaryMatch[1]);
+    let In_Camp = parseInt(summaryMatch[2]);
+    let Out_Camp = parseInt(summaryMatch[3]);
+
+    // Initialize counters for different categories
+    var Stay_out = 0, MA = 0, MC = 0, Leaves = 0, OVL = 0, Off = 0, Course = 0, Others = 0, HL = 0;
+
+    // Define rank types
+    let ranks = ["REC", "PTE", "SCT", "LCP", "CPL", "CFC", "3SG", "2SG", "1SG", "SSG", "MSG", "3WO", "2WO", "1WO", "MWO", "SWO", "CWO", "2LT", "OCT", "LTA", "CPT", "MAJ", "LTC", "SLTC", "COL", "BG", "CO", "B2", "RSM", "USO"];
+
+    // Split the input into individual departments based on "*Department*" pattern
+    var departments = parade_state.split(/\*\w+ Department\*/);
+
+    departments.forEach(department => {
+        let lines = department.split("\n").map(line => line.trim());
+
+        // Extracting specific sections from the department
+        let currentLeave = false;
+        let currentOff = false;
+        let currentHL = false;
+        let currentMA = false;
+        let currentCourse = false;
+        let currentOthers = false;
+
+        lines.forEach(line => {
+            // Update the state based on header keywords
+            if (line.startsWith("Leave:")) {
+                currentLeave = true;
+                currentOff = currentHL = currentMA = currentCourse = currentOthers = false;
+            } else if (line.startsWith("Off:")) {
+                currentOff = true;
+                currentLeave = currentHL = currentMA = currentCourse = currentOthers = false;
+            } else if (line.startsWith("HOSPITALISATION LEAVE:")) {
+                currentHL = true;
+                currentLeave = currentOff = currentMA = currentCourse = currentOthers = false;
+            } else if (line.startsWith("Medical Appointment:") || line.startsWith("MA:")) {
+                currentMA = true;
+                currentLeave = currentOff = currentHL = currentCourse = currentOthers = false;
+            } else if (line.startsWith("Course:") || line.startsWith("COURSE:")) {
+                currentCourse = true;
+                currentLeave = currentOff = currentHL = currentMA = currentOthers = false;
+            } else if (line.startsWith("Others:")) {
+                currentOthers = true;
+                currentLeave = currentOff = currentHL = currentMA = currentCourse = false;
             }
-            if (word.toUpperCase().includes("LAST PARADE")) {
-                first_parade = false
-            }
-            if (word.toUpperCase().includes("STAY OUT PERSONNEL")) {
-                stayout_index = index;
-            }
-            if (word.toUpperCase().includes("STAY IN PERSONNEL")) {
-                stayin_index = index;
-            }
-            if (word.toUpperCase().includes("MEDICAL APPOINTMENT")) {
-                MA_index = index;
-            }
-            if (word.toUpperCase().includes("MEDICAL LEAVE")) {
-                MC_index = index;
-            }
-            if (word.toUpperCase().includes("HOSPITALISATION LEAVE")) {
-                HL_index = index;
-            }
-            if (word.toUpperCase().includes("LEAVES")) {
-                Leave_index = index;
-            }
-            if (word.toUpperCase().includes("OVERSEAS LEAVE")) {
-                OVL_index = index;
-            }
-            if (word.toUpperCase().includes("OFF")) {
-                Off_index = index;
-            }
-            if (word.toUpperCase().includes("OTHER")) {
-                others_index = index;
-            }
-            if (word.toUpperCase().includes("COURSE")) {
-                course_index = index;
-            }
-        }
-        if (!first_parade) {
-            let stayout_array = Department.slice(stayout_index,stayin_index);
-            for (let index = 0; index < stayout_array.length; index++) {
-                const element = stayout_array[index];
+
+            // Count personnel for each category
+            if (currentLeave) {
                 ranks.forEach(rank => {
-                    if (element.includes(rank)) {
-                        Stay_out += 1;
+                    if (line.includes(rank)) {
+                        Leaves += 1;
+                    }
+                });
+            } else if (currentOff) {
+                ranks.forEach(rank => {
+                    if (line.includes(rank)) {
+                        Off += 1;
+                    }
+                });
+            } else if (currentHL) {
+                ranks.forEach(rank => {
+                    if (line.includes(rank)) {
+                        HL += 1;
+                    }
+                });
+            } else if (currentMA) {
+                ranks.forEach(rank => {
+                    if (line.includes(rank)) {
+                        MA += 1;
+                    }
+                });
+            } else if (currentCourse) {
+                ranks.forEach(rank => {
+                    if (line.includes(rank)) {
+                        Course += 1;
+                    }
+                });
+            } else if (currentOthers) {
+                ranks.forEach(rank => {
+                    if (line.includes(rank)) {
+                        Others += 1;
                     }
                 });
             }
-        }
-        let MA_array = Department.slice(MA_index,MC_index);
-        for (let index = 0; index < MA_array.length; index++) {
-            const element = MA_array[index];
-            ranks.forEach(rank => {
-                if (element.includes(rank)) {
-                    MA += 1;
-                }
-            });
-        }
-        let MC_array = Department.slice(MC_index,HL_index);
-        for (let index = 0; index < MC_array.length; index++) {
-            const element = MC_array[index];
-            ranks.forEach(rank => {
-                if (element.includes(rank)) {
-                    MC += 1;
-                }
-            });
-        }
-        let HL_array = Department.slice(HL_index,Leave_index);
-        for (let index = 0; index < HL_array.length; index++) {
-            const element = HL_array[index];
-            ranks.forEach(rank => {
-                if (element.includes(rank)) {
-                    HL += 1;
-                }
-            });
-        }
-        let leave_array = Department.slice(Leave_index,OVL_index);
-        for (let index = 0; index < leave_array.length; index++) {
-            const element = leave_array[index];
-            ranks.forEach(rank => {
-                if (element.includes(rank)) {
-                    Leaves += 1;
-                }
-            });
-        }
-        let ovl_array = Department.slice(OVL_index,Off_index);
-        for (let index = 0; index < ovl_array.length; index++) {
-            const element = ovl_array[index];
-            ranks.forEach(rank => {
-                if (element.includes(rank)) {
-                    OVL += 1;
-                }
-            });
-        }
-        let off_array = Department.slice(Off_index,course_index);
-        for (let index = 0; index < off_array.length; index++) {
-            const element = off_array[index];
-            ranks.forEach(rank => {
-                if (element.includes(rank)) {
-                    Off += 1;
-                }
-            });
-        }
-        let course_array = Department.slice(course_index,others_index);
-        for (let index = 0; index < course_array.length; index++) {
-            const element = course_array[index];
-            ranks.forEach(rank => {
-                if (element.includes(rank)) {
-                    Course += 1;
-                }
-            });
-        }
-        let other_array = Department.slice(others_index, Department.length)
-        for (let index = 0; index < other_array.length; index++) {
-            const element = other_array[index];
-            ranks.forEach(rank => {
-                if (element.includes(rank)) {
-                    Others += 1;
-                }
-            });
-        }
-    }
-    let Out_Camp = Course + Off + Leaves + OVL + MC + MA + Others + Stay_out + HL;
-    let Current_Strength = Total_Strength - Out_Camp
-    let time = "0800"
+        });
+    });
+
+    // Calculate current strength and other values
+    let Current_Strength = Total_Strength - Out_Camp;
+    let time = "0845";
     const date = new Date();
-    let day = date.getDate()
-    let month = date.getMonth() + 1
-    let year = date.getFullYear()
-    let sun = "Morning"
-    year = year.toString().slice(2,4)
-    if (!first_parade) {
-        time = "2100"
-        sun = "Evening"
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear().toString().slice(2, 4);
+    let sun = "Morning";
+
+    // Update time for first or second parade
+    if (summaryMatch[0].includes("0845HRS")) {
+        time = "0845";
+        sun = "Morning";
+    } else {
+        time = "2100";
+        sun = "Evening";
     }
-    else {
-        day += 1;
-    }
+
+    // Generate the output text
     document.getElementById("pState").value = `
 HQ COY ${day}/${month}/${year} ${time} HRS
 ${sun} Strength: ${Current_Strength} / ${Total_Strength}
@@ -176,21 +122,26 @@ Off/Wkend: ${Off}
 Detention: ${0}
 Hospitalisation: ${HL} 
 Local Leave: ${Leaves}
- Overseas Leave: ${OVL}
+Overseas Leave: ${OVL}
 MC: ${MC}
 Others: ${Others}
 MA/Dental: ${MA}
-Stay-Out: ${Stay_out}
-(Subtotal) Out camp: ${Out_Camp}`
+Stay-Out: ${Out_Camp}
+(Subtotal) Out camp: ${Out_Camp}`.trim();
 }
+
 function copyText() {
-  // Get the text field
-  var copyText = document.getElementById("pState");
+    // Get the textarea element
+    var copyText = document.getElementById("pState");
 
-  // Select the text field
-  copyText.select();
-  copyText.setSelectionRange(0, 99999); // For mobile devices
+    // Select the text field
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // For mobile devices
 
-   // Copy the text inside the text field
-  navigator.clipboard.writeText(copyText.value)
+    // Copy the text inside the text field
+    navigator.clipboard.writeText(copyText.value).then(() => {
+        alert("Copied the text!");
+    }).catch(err => {
+        console.error("Failed to copy: ", err);
+    });
 }
